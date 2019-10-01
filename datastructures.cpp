@@ -86,8 +86,55 @@ int pop(Stack *s){
 	return EMPTY;
 }
 
+// functions for Deque
+// pushes element on both sides
+// complexity: O(1)
+void push_front(Deque *d, int val){
+    Node *temp = new Node(val, d->top, NULL);
+    d->top = temp;
+    d->size++;
+}
+
+int pop_front(Deque *d){
+    if(d->size > 0){
+        d->size--;
+        Node *temp = d->top;
+        d->top = d->top->prev;
+        d->top->next = NULL;
+        
+        int val = temp->value;
+        delete temp;
+        return val;
+    }
+    
+    return EMPTY;
+}
+
+void push_back(Deque *d, int val){
+    Node *temp = new Node(val, NULL, d->bot);
+    d->bot->prev = temp;
+	d->bot = temp;
+    d->size++;
+}
+
+int pop_back(Deque *d){
+    if(d->size > 0){
+        d->size--;
+        Node *temp = d->top;
+		d->top = d->top->prev;
+		
+		int v = temp->value;
+
+		delete temp;
+		return v;
+    }
+    
+    return EMPTY;
+}
+
 int main(){
 	Stack *s = new Stack();
+	
 	push(s, 4);
 	push(s, 2);
 	push(s, 6);
@@ -95,8 +142,25 @@ int main(){
 	push(s, 7);
 	push(s, 3);
 	push(s, 8);
+	
 	while(s->size > 0){
 		cout << pop(s) << endl;
+	} 
+	
+	Deque *d = new Deque();
+	
+	push_front(d, 1);
+	push_front(d, 2);
+	push_back(d, 3);
+	push_back(d, 4);
+	
+	while(d->size > 0){
+	    if(d->size & 1)
+	        cout << pop_front(d) << endl;
+	    else cout << pop_back(d) << endl;
+	   
 	}
+	
+	
 	return 0;
 }
